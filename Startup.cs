@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace blog
@@ -27,7 +22,17 @@ namespace blog
         public void ConfigureServices(IServiceCollection services)
         {
 
+           services.AddHttpsRedirection(options =>
+            {
+                //options.RedirectStatusCode = (int) HttpStatusCode.TemporaryRedirect;
+                options.HttpsPort = 5001;
+            });
+            services.AddAuthentication(
+                    CertificateAuthenticationDefaults.AuthenticationScheme)
+                    .AddCertificate();
+            services.AddCors();
             services.AddControllers();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "blog", Version = "v1" });
@@ -46,7 +51,23 @@ namespace blog
 
             app.UseHttpsRedirection();
 
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "blog v1"));
+            }
+
+
             app.UseRouting();
+
+            // Make sure you call this before calling app.UseMvc()
+            app.UseCors(
+                options => options.WithOrigins("*")
+                                    .AllowAnyOrigin()
+                                    .AllowAnyHeader()
+                                    .AllowAnyMethod()
+            );
 
             app.UseAuthorization();
 
