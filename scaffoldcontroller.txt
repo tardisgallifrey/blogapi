@@ -1,0 +1,36 @@
+dotnet aspnet-codegenerator controller -name TodoItemsController -async -api -m TodoItem -dc TodoContext -outDir Controllers
+
+Caveat-Only works correctly when Project target is net5.0, not net50
+
+controller -argument for the code generator
+
+-name --specifies the name of the controller .cs file (ontroller folder must exist, I believe)
+
+-async  --required, I think
+
+-m --name of Model to use in Model folder
+
+-dc --name of DbContext to use in DbContext folder (everything in Startup must be set  
+                    .e.g.
+                            services.AddControllers();
+                            services.AddDbContext<TodoContext>(opt =>
+                                               opt.UseInMemoryDatabase("TodoList"));
+                                               
+                    Or something equivalent)
+
+-outDir --Name of folder to store generated controller
+
+
+
+
+ services.AddCors(options =>
+            {
+                //Primary Cors Policy
+                //Could make others just like this
+                options.AddPolicy("ThePolicy",
+                builder =>
+                {
+                    builder.WithOrigins("*",
+                                        "*");
+                });
+            });
