@@ -1,10 +1,21 @@
-dotnet aspnet-codegenerator controller -name TodoItemsController -async -api -m TodoItem -dc TodoContext -outDir Controllers
+VERY IMPORTANT NOTE:
+On a code-first situation (you are creating the database from Models), this instruction MUST BE RUN BEFORE migrations
+
+DO NOT ADD a DbContext.  This will create the DbContext files and Startup.cs settings
+
+You must run this instruction line for EACH model file in the Models directory.
+
+It will create a controller and DbContext and services.add() for each one.
+You will have to change the connection likely.
+
+
+dotnet aspnet-codegenerator controller -name UserController -async -api -m users -dc DbContext -outDir Controllers
 
 Caveat-Only works correctly when Project target is net5.0, not net50
 
 controller -argument for the code generator
 
--name --specifies the name of the controller .cs file (ontroller folder must exist, I believe)
+-name --specifies the name of the controller .cs file (Controller folder must exist, I believe)
 
 -async  --required, I think
 
