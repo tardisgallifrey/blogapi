@@ -8,8 +8,27 @@ You must run this instruction line for EACH model file in the Models directory.
 It will create a controller and DbContext and services.add() for each one.
 You will have to change the connection likely.
 
-
+Per table/controller design instruction:
 dotnet aspnet-codegenerator controller -name UserController -async -api -m users -dc DbContext -outDir Controllers
+
+WHEN DOING DATABASE MIGRATIONS:
+Because multiple tables/models will create multiple DbContexts, you will have to run migrations one at a time.
+It doesn't appear to matter the order as long as each migration works successfully.
+So:
+Do first migration (Contexts are listed in Data folder):
+dotnet ef migrations add myproject_first --context DbChoosefirstContext
+
+Complete first migration:
+dotnet ef database update --context DbChoosefirstContext
+
+Do second migration:
+dotnet ef migrations add myproject_second --contextDbNextContext
+
+Complete second migration:
+dotnet ef database update --context contextDbNextContext
+
+Rinsh, wash, repeat until all are done. 
+DO NOT UNDER ANY CIRCUMSTANCES DELETE ANYTHING FROM MIGRATIONS FOLDER WHILE DOING THIS (or after for that matter)
 
 Caveat-Only works correctly when Project target is net5.0, not net50
 
