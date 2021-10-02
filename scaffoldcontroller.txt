@@ -8,8 +8,14 @@ You must run this instruction line for EACH model file in the Models directory.
 It will create a controller and DbContext and services.add() for each one.
 You will have to change the connection likely.
 
+NOTE: MAKE SURE YOU CHANGE ALL NAMES THAT APPLY
+NAMELY: controller name should match -m NAME, Context -dc NAME should match with -m NAME
+Use this as a guide, but be sure to change for each run of this instruction.
+
+-m NAME matches Property class name, not .cs file name
+
 Per table/controller design instruction:
-dotnet aspnet-codegenerator controller -name UserController -async -api -m users -dc DbContext -outDir Controllers
+dotnet aspnet-codegenerator controller -name UserController -async -api -m User -dc DbContext -outDir Controllers
 
 WHEN DOING DATABASE MIGRATIONS:
 Because multiple tables/models will create multiple DbContexts, you will have to run migrations one at a time.

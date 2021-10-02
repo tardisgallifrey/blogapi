@@ -1,33 +1,35 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using blog;
+
+//This class is the inteface between
+//The calling app and the database
+//There are CRUD functions below
+//Create, Read, Update, Delete (a record)
 
 namespace blog.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BlogEntryController : ControllerBase
+    public class BlogController : ControllerBase
     {
-        private readonly BlogDbContext _context;
+        private readonly BlogContext _context;
 
-        public BlogEntryController(BlogDbContext context)
+        public BlogController(BlogContext context)
         {
             _context = context;
         }
 
-        // GET: api/BlogEntry
+        // GET: api/Blog
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BlogEntry>>> GetBlogEntry()
         {
             return await _context.BlogEntry.ToListAsync();
         }
 
-        // GET: api/BlogEntry/5
+        // GET: api/Blog/5
         [HttpGet("{id}")]
         public async Task<ActionResult<BlogEntry>> GetBlogEntry(long id)
         {
@@ -41,7 +43,7 @@ namespace blog.Controllers
             return blogEntry;
         }
 
-        // PUT: api/BlogEntry/5
+        // PUT: api/Blog/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBlogEntry(long id, BlogEntry blogEntry)
@@ -72,7 +74,7 @@ namespace blog.Controllers
             return NoContent();
         }
 
-        // POST: api/BlogEntry
+        // POST: api/Blog
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<BlogEntry>> PostBlogEntry(BlogEntry blogEntry)
@@ -83,7 +85,7 @@ namespace blog.Controllers
             return CreatedAtAction("GetBlogEntry", new { id = blogEntry.BlogEntryId }, blogEntry);
         }
 
-        // DELETE: api/BlogEntry/5
+        // DELETE: api/Blog/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBlogEntry(long id)
         {

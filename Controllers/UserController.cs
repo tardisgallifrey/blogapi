@@ -1,32 +1,32 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
+//Read comments in Blog Controller
 
 namespace blog.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserEntryController : ControllerBase
+    public class UserController : ControllerBase
     {
-        private readonly UserDbContext _context;
+        private readonly UserContext _context;
 
-        public UserEntryController(UserDbContext context)
+        public UserController(UserContext context)
         {
             _context = context;
         }
 
-        // GET: api/UserEntry
+        // GET: api/User
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
             return await _context.User.ToListAsync();
         }
 
-        // GET: api/UserEntry/5
+        // GET: api/User/5
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(long id)
         {
@@ -40,7 +40,7 @@ namespace blog.Controllers
             return user;
         }
 
-        // PUT: api/UserEntry/5
+        // PUT: api/User/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(long id, User user)
@@ -71,7 +71,7 @@ namespace blog.Controllers
             return NoContent();
         }
 
-        // POST: api/UserEntry
+        // POST: api/User
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
@@ -82,7 +82,7 @@ namespace blog.Controllers
             return CreatedAtAction("GetUser", new { id = user.UserId }, user);
         }
 
-        // DELETE: api/UserEntry/5
+        // DELETE: api/User/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(long id)
         {
