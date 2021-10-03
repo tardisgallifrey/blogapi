@@ -22,6 +22,8 @@ namespace blog
         
         //Connects the post to a User
         public long blogUserId { get; set; }
+
+        public long blogCategory { get; set; }
     }
 
     
